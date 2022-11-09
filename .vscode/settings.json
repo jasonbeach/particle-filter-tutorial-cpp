@@ -1,0 +1,15 @@
+{
+  "files.watcherExclude": {
+    "**/build/**": true
+  },
+  "editor.formatOnSave": true,
+  "editor.tabSize": 2,
+  "editor.rulers": [
+    100
+  ],
+  "gitlens.codeLens.enabled": false,
+  "terminal.integrated.scrollback": 10000,
+  "[cpp]": {
+    "editor.defaultFormatter": "llvm-vs-code-extensions.vscode-clangd"
+  }
+}

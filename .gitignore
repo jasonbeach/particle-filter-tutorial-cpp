@@ -1,0 +1,7 @@
+
+# build and install dirs managed by cmake/ninja
+/build
+/install
+
+# required for clangd
+/.cache

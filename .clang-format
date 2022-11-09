@@ -1,0 +1,13 @@
+---
+Language: Cpp
+BasedOnStyle: Google
+
+BreakConstructorInitializers: AfterColon
+ColumnLimit: 100
+ContinuationIndentWidth: 2
+SpaceBeforeCpp11BracedList: true
+FixNamespaceComments: true
+
+DerivePointerAlignment: false
+PointerAlignment: Left
+ReferenceAlignment: Left

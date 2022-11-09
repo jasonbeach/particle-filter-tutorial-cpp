@@ -1,0 +1,47 @@
+target_sources(${PROJECT_NAME}
+  PRIVATE
+    particle_filter.base.cpp
+)
+
+install(
+  FILES 
+    particle_filter.base.hpp
+  DESTINATION
+    ${PROJECT_INSTALL_INCLUDE_DIR}
+  COMPONENT 
+    ${PROJECT_NAME}_Development
+)
+
+# need this for now until we upgrade to newer version of g++
+set_property(TARGET particle_filter APPEND PROPERTY INTERFACE_LINK_LIBRARIES -lstdc++fs)
+
+# make the dummy plugin
+add_executable(particle_filter_main
+  particle_filter.main.cpp
+)
+
+target_link_libraries(
+    particle_filter_main
+  PRIVATE
+    pf::particle_filter
+)
+
+install(TARGETS particle_filter_main
+  LIBRARY 
+    DESTINATION ${PROJECT_INSTALL_BIN_DIR}
+    COMPONENT ${PROJECT_NAME}_RunTime
+)
+
+if (BUILD_TESTING)
+  add_executable(particle_filter_test 
+    particle_filter.test.cpp
+  )
+  target_link_libraries(particle_filter_test 
+    PUBLIC 
+      catch_main
+      pf::particle_filter
+  )
+
+  add_test(NAME particle_filter_test COMMAND particle_filter_test )
+
+endif()
