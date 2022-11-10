@@ -54,6 +54,9 @@ class ParticleFilter {
    */
   void initialize_particles_gaussian(const Eigen::Vector3d& mean_vector,
                                      const Eigen::Vector3d& std_vector);
+
+  Particle validate_state(const Particle& particle);
+
  private:
   LimitsParameters limits_parameters_;
   ProcessNoiseParameters process_noise_parameters_;

@@ -54,3 +54,31 @@ void ParticleFilter::initialize_particles_gaussian(const Eigen::Vector3d& mean_v
   }
   fmt::print("{} particles normally initialized\n", particles_.size());
 }
+
+ParticleFilter::Particle ParticleFilter::validate_state(const Particle& particle) {
+  auto validated_particle = particle;
+
+  // Make sure state does not exceed allowed limits (cyclic world)
+  while (validated_particle.state.x() < limits_parameters_.x_min) {
+    validated_particle.state.x() += (limits_parameters_.x_max - limits_parameters_.x_min);
+  }
+  while (validated_particle.state.x() > limits_parameters_.x_max) {
+    validated_particle.state.x() -= (limits_parameters_.x_max - limits_parameters_.x_min);
+  }
+  while (validated_particle.state.y() < limits_parameters_.y_min) {
+    validated_particle.state.y() += (limits_parameters_.y_max - limits_parameters_.y_min);
+  }
+  while (validated_particle.state.y() > limits_parameters_.y_max) {
+    validated_particle.state.y() -= (limits_parameters_.y_max - limits_parameters_.y_min);
+  }
+
+  // Angle must be [-pi, pi]
+  while (validated_particle.state.z() > M_PI) {
+    validated_particle.state.z() -= 2.0 * M_PI;
+  }
+  while (validated_particle.state.z() < -M_PI) {
+    validated_particle.state.z() += 2.0 * M_PI;
+  }
+
+  return validated_particle;
+}
