@@ -43,6 +43,17 @@ class ParticleFilter {
    */
   void initialize_particles_uniform();
 
+  /**
+   * @brief Initialize particle filter using a Gaussian distribution with dimension three: x, y,
+   * heading. Only standard deviations can be provided hence the covariances are all assumed zero.
+   * Again the state dimension is implicitly hardcoded here by assuming each vector has a length of
+   * 3.
+   *
+   * @param mean_vector Mean of the Gaussian distribution used for initializing the particle states
+   * @param std_vector Standard deviations (one for each dimension)
+   */
+  void initialize_particles_gaussian(const Eigen::Vector3d& mean_vector,
+                                     const Eigen::Vector3d& std_vector);
  private:
   LimitsParameters limits_parameters_;
   ProcessNoiseParameters process_noise_parameters_;

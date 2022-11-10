@@ -35,3 +35,22 @@ void ParticleFilter::initialize_particles_uniform() {
   }
   fmt::print("{} particles uniformly initialized\n", particles_.size());
 }
+
+void ParticleFilter::initialize_particles_gaussian(const Eigen::Vector3d& mean_vector,
+                                                   const Eigen::Vector3d& std_vector) {
+  std::random_device rd {};
+  std::mt19937 gen {rd()};
+  std::array<std::normal_distribution<>, 3> dists;
+  dists[0] = std::normal_distribution<> {mean_vector[0], std_vector[0]};
+  dists[1] = std::normal_distribution<> {mean_vector[1], std_vector[1]};
+  dists[2] = std::normal_distribution<> {mean_vector[2], std_vector[2]};
+
+  const double weight = 1.0 / num_particles_;
+  for (auto& particle : particles_) {
+    particle.weight = weight;
+    particle.state.x() = dists[0](gen);
+    particle.state.y() = dists[1](gen);
+    particle.state.z() = dists[2](gen);
+  }
+  fmt::print("{} particles normally initialized\n", particles_.size());
+}
