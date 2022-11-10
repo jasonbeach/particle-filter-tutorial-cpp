@@ -33,4 +33,5 @@ void ParticleFilter::initialize_particles_uniform() {
                          limits_dis(gen) * (limits_parameters_.y_max - limits_parameters_.y_min);
     particle.state.z() = angle_dis(gen);
   }
+  fmt::print("{} particles uniformly initialized\n", particles_.size());
 }

@@ -3,6 +3,14 @@
 
 #include "Eigen/Dense"
 
+/**
+ * @brief Notes:
+ *        - State is (x, y, heading), where x and y are in meters and heading in radians
+ *        - State space assumed limited size in each dimension, world is cyclic (hence leaving at
+ *          x_max means entering at x_min)
+ *        - Abstract class
+ *
+ */
 class ParticleFilter {
  public:
   struct LimitsParameters {
@@ -28,6 +36,11 @@ class ParticleFilter {
                  const ProcessNoiseParameters& process_noise,
                  const MeasurementNoiseParameters& measurement_noise);
 
+  /**
+   * @brief Initialize the particles uniformly over the world assuming a 3D state (x, y, heading).
+   * No arguments are required and function always succeeds hence no return value.
+   *
+   */
   void initialize_particles_uniform();
 
  private:
