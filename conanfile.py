@@ -4,7 +4,7 @@ from conans import ConanFile, CMake, tools
 
 
 class ParticleFilterConan(ConanFile):
-  name = "particle_filter"
+  name = "particle_filter_tutorial_cpp"
   scm = {
     "type": "git",
     "subfolder": "particle_filter",

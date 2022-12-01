@@ -4,7 +4,7 @@ cmake_minimum_required(VERSION 3.20)
 #fetch cross compiler and set CMAKE_TOOLCHAIN_FILE here if needed
 file(STRINGS ${CMAKE_CURRENT_LIST_DIR}/version project_VER)
 message("Configuring particle_filter version ${project_VER}.")
-project(particle_filter VERSION ${project_VER})
+project(particle_filter_tutorial_cpp VERSION ${project_VER})
 
 include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
@@ -31,11 +31,12 @@ endif()
 
 option(BUILD_SHARED_LIBS "Default to building Shared Libraries" ON)
 
-find_package(Catch2 MODULE REQUIRED)
+
 find_package(fmt REQUIRED)
 find_package(Eigen3 REQUIRED)
 
 if (BUILD_TESTING)
+  find_package(Catch2 MODULE REQUIRED)
   include(tests/CMakeLists.txt)
 endif()
 
@@ -60,7 +61,7 @@ target_compile_options(${PROJECT_NAME}
 target_include_directories(${PROJECT_NAME}
   PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_LIST_DIR}/src>
-  $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCLUDE_DIR}/..>
+    $<INSTALL_INTERFACE:${PROJECT_INSTALL_INCLUDE_DIR}/..>
 )
 
 # Good flags to have once we move to a new compiler

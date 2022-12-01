@@ -1,0 +1,13 @@
+get_filename_component(PARTICLE_FILTER_TUTORIAL_CPP_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+include(CMakeFindDependencyMacro)
+
+# place instructions for finding dependencies of this repo here for example:
+
+find_dependency(fmt REQUIRED)
+find_dependency(Eigen REQUIRED)
+
+if(NOT TARGET pf::particle_filter_tutorial_cpp)
+    include("${PARTICLE_FILTER_TUTORIAL_CPP_CMAKE_DIR}/particle_filter_tutorial_cpp-targets.cmake")
+endif()
+
+set(PARTICLE_FILTER_TUTORIAL_CPP_LIBRARIES pf::particle_filter_tutorial_cpp)

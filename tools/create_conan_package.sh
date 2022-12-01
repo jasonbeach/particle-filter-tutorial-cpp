@@ -5,9 +5,8 @@ script_dir="$(dirname "$(readlink -f "$0")")"
 root_dir=$script_dir/..
 
 #options
-PACKAGE_NAME=raptor_outerface
+PACKAGE_NAME=particle_filter_tutorial_cpp
 VERSION_FILE_NAME=version
-DO_UPLOAD=false
 FORCE_PACKAGE_BUILD=false
 
 
@@ -45,10 +44,6 @@ main() {
     $root_dir \
     ${FULL_PACKAGE_NAME}@ssci/test
   
-  if [ "${DO_UPLOAD}" == true ]; then
-   upload_package
-  fi
-
 }
 
 check_git_clean(){
@@ -64,33 +59,15 @@ check_git_clean(){
   fi
 }
 
-upload_package(){
-  
 
-  if [ ${COMMITS_SINCE_RELEASE} == 0 ]; then
-    if [ $(git status --porcelain | wc -l) -eq "0" ]; then
-      echo "uploading package ${FULL_PACKAGE_NAME}"
-      conan copy ${FULL_PACKAGE_NAME}@ssci/test ssci/stable --all --force
-      conan upload ${FULL_PACKAGE_NAME}@ssci/stable -r ssci --all --confirm
-    else
-      echo "Cannot upload. Repository has changes that aren't committed."
-    fi
-  else
-    echo "Cannot upload.  Not a tagged release."
-    exit 1
-  fi
-}
 
 parse_args() {
 # most of these args aren't wired up.
 
-  while getopts "fuh" opt; do
+  while getopts "fh" opt; do
     case ${opt} in
       f)
         FORCE_PACKAGE_BUILD=true
-        ;;
-      u)
-        DO_UPLOAD=true
         ;;
       h )
         usage
@@ -113,7 +90,6 @@ usage: ./create_conan_package.sh [options]
 
 options:
   -f: force build package when git repo is dirty
-  -u: upload package to ssci artifactory
   -h: display this help
 
 EOF
