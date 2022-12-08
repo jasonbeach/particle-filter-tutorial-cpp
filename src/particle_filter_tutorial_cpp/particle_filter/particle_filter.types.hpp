@@ -33,3 +33,34 @@ struct formatter<Particle> {
 };
 
 }  // namespace fmt
+
+/**
+ * @brief this is cool -- this is an enumerate function like python has. It allows something like:
+ *         for (const auto [i, sample] : enumerate(samples)){
+ *           // i is the "index" or enumerated value
+ *           // sample is the ith element from samples container
+ *         }
+ *
+ * It optionally takes an initial value so you can start at 1 instead of 0 or 100 or whatever
+ */
+template <typename T, typename TIter = decltype(std::begin(std::declval<T>())),
+          typename = decltype(std::end(std::declval<T>()))>
+constexpr auto enumerate(T&& iterable, size_t init_val = 0) {
+  struct iterator {
+    size_t i;
+    TIter iter;
+    bool operator!=(const iterator& other) const { return iter != other.iter; }
+    void operator++() {
+      ++i;
+      ++iter;
+    }
+    auto operator*() const { return std::tie(i, *iter); }
+  };
+  struct iterable_wrapper {
+    T iterable;
+    size_t init_val = 0;
+    auto begin() { return iterator {init_val, std::begin(iterable)}; }
+    auto end() { return iterator {init_val, std::end(iterable)}; }
+  };
+  return iterable_wrapper {std::forward<T>(iterable), init_val};
+}

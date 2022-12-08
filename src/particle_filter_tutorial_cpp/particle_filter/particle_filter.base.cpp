@@ -121,21 +121,21 @@ ParticleList ParticleFilter::normalize_weights(const ParticleList& particles) {
 
   ParticleList normalized_particles;
   normalized_particles.reserve(num_particles);
-  const double new_weight = 1.0 / num_particles;
 
-  if (sum_weights < 1e-15) {
+  if (const double new_weight = 1.0 / num_particles; sum_weights < 1e-15) {
     fmt::print(
       "{}: Weight normalization failed: sum of all weights is {} (weights will be reinitialized)\n",
       fmt::styled("Warning", fmt::fg(fmt::color::yellow)), sum_weights);
+
     std::transform(particles.begin(), particles.end(), std::back_inserter(normalized_particles),
-                   [new_weight](const auto& p) {
+                   [new_weight](const Particle& p) {
                      return Particle {new_weight, p.state};
                    });
     return normalized_particles;
   }
 
   std::transform(particles.begin(), particles.end(), std::back_inserter(normalized_particles),
-                 [sum_weights](const auto& p) {
+                 [sum_weights](const Particle& p) {
                    return Particle {p.weight / sum_weights, p.state};
                  });
   return normalized_particles;
