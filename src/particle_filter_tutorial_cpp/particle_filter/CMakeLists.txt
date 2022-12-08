@@ -2,12 +2,14 @@ target_sources(${PROJECT_NAME}
   PRIVATE
     particle_filter.types.cpp
     particle_filter.base.cpp
+    particle_filter.adaptive_kld.cpp
 )
 
 install(
   FILES 
     particle_filter.types.hpp
     particle_filter.base.hpp
+    particle_filter.adaptive_kld.hpp
   DESTINATION
     ${PROJECT_INSTALL_INCLUDE_DIR}/particle_filter
   COMPONENT 

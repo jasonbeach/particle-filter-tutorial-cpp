@@ -30,6 +30,8 @@ ParticleList::const_iterator naive_search(const ParticleList& cumulative_list, d
  */
 ParticleList::const_iterator binary_search(const ParticleList& cumulative_list, double x);
 
+ParticleList::const_iterator draw_sample_by_weight(const ParticleList& cumulative_list);
+
 /**
  * @brief simple rounding function to robustly convert a double to int with a guarentee that
  * floating point precision won't be an issue.  i.e. if we want 15 but the number given

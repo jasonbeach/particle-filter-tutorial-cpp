@@ -135,7 +135,7 @@ class ParticleFilter {
   virtual void update(double robot_forward_motion, double robot_angular_motion,
                       const MeasurementList& measurements, const LandmarkList& landmarks) = 0;
 
- private:
+ protected:
   LimitsParameters limits_parameters_;
   ProcessNoiseParameters process_noise_parameters_;
   MeasurementNoiseParameters measurement_noise_parameters_;

@@ -43,6 +43,20 @@ ParticleList::const_iterator binary_search(const ParticleList& cumulative_list, 
                           [](const Particle& sample, double y) { return y < sample.weight; });
 }
 
+ParticleList::const_iterator draw_sample_by_weight(const ParticleList& cumulative_list) {
+  static std::random_device rd;
+  static std::mt19937_64 gen(rd());
+
+  if (cumulative_list.empty()) {
+    throw std::runtime_error("[draw_sample_by_weight] provided particle list is empty");
+  }
+
+  std::uniform_real_distribution<> dist(1e-6, cumulative_list.back().weight);
+
+  double u = dist(gen);
+  return (naive_search(cumulative_list, u));
+}
+
 ssize_t roundi(double x) { return static_cast<ssize_t>(x + 0.5); }
 
 ParticleList replication(const ParticleList& samples) {
