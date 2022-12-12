@@ -4,9 +4,8 @@
 
 #include "Eigen/Dense"
 #include "fmt/core.h"
-
-using MeasurementList = std::vector<Eigen::Vector2d>;
-using LandmarkList = std::vector<Eigen::Vector2d>;
+#include "particle_filter_tutorial_cpp/simulator/simulator.robot.hpp"
+#include "particle_filter_tutorial_cpp/simulator/simulator.world.hpp"
 
 struct Particle {
   Particle() = default;

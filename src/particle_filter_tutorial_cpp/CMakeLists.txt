@@ -1,2 +1,3 @@
 add_subdirectory(particle_filter)
 add_subdirectory(resampling)
+add_subdirectory(simulator)
