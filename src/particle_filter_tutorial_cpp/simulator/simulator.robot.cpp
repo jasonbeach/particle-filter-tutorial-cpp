@@ -39,6 +39,8 @@ MeasurementList Robot::measure(const World& world) const {
   return measurements;
 }
 
+const Eigen::Vector3d& Robot::state() const { return current_state_; }
+
 double Robot::get_gaussian_noise_sample(double mu, double sigma) {
   static std::random_device rd {};
   static std::mt19937 gen {rd()};

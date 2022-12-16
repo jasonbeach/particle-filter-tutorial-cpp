@@ -31,9 +31,22 @@ endif()
 
 option(BUILD_SHARED_LIBS "Default to building Shared Libraries" ON)
 
+include(FetchContent)
+
+FetchContent_Declare(matplotplusplus
+        GIT_REPOSITORY https://github.com/alandefreitas/matplotplusplus
+        GIT_TAG origin/master) 
+FetchContent_MakeAvailable(matplotplusplus)
+
+# these two lines are a hack to mark Matplot++ include directories as SYSTEM so they don't generate
+# warnings
+get_target_property(matplot_inc Matplot++::matplot INTERFACE_INCLUDE_DIRECTORIES)
+target_include_directories(matplot SYSTEM INTERFACE ${matplot_inc})
 
 find_package(fmt REQUIRED)
 find_package(Eigen3 REQUIRED)
+
+
 
 if (BUILD_TESTING)
   find_package(Catch2 MODULE REQUIRED)
@@ -77,6 +90,7 @@ target_link_libraries(${PROJECT_NAME}
   PUBLIC 
     fmt::fmt
     Eigen3::Eigen
+    Matplot++::matplot
 )
 
 #main targets built by this project
@@ -92,7 +106,7 @@ set_target_properties(${PROJECT_NAME}
 
 # install target (e.g. the actual .a or .so files) and create an export set so the library can be 
 # imported into another project
-install(TARGETS ${PROJECT_NAME} EXPORT ${PROJECT_NAME}-targets
+install(TARGETS ${PROJECT_NAME} matplot EXPORT ${PROJECT_NAME}-targets
   RUNTIME 
   DESTINATION ${PROJECT_INSTALL_BIN_DIR}
     COMPONENT ${PROJECT_NAME}_RunTime

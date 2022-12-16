@@ -55,6 +55,8 @@ class Robot {
    */
   MeasurementList measure(const World& world) const;
 
+  const Eigen::Vector3d& state() const;
+
  private:
   /**
    * @brief Get a random sample from a 1D Gaussian distribution with mean mu and standard deviation
