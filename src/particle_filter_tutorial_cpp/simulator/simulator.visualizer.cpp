@@ -18,15 +18,16 @@ void Visualizer::draw_world(const World& world, const Robot& robot, const Partic
   const double x_max = params_.x_margin + world.get_size().x();
   const double y_min = -params_.y_margin;
   const double y_max = params_.y_margin + world.get_size().y();
-  const double fig_size_x = (x_max - x_min) / params_.scale;
-  const double fig_size_y = (y_max - y_min) / params_.scale;
+  // const double fig_size_x = (x_max - x_min) / params_.scale;
+  // const double fig_size_y = (y_max - y_min) / params_.scale;
 
-  fmt::print("[draw_world] plot boundaries x: [{},{}] y: [{},{}]\n", x_min, x_max, y_min, y_max);
-  fmt::print("[draw_world] figure size: [{},{}]\n", fig_size_x, fig_size_y);
+  // fmt::print("[draw_world] plot boundaries x: [{},{}] y: [{},{}]\n", x_min, x_max, y_min, y_max);
+  // fmt::print("[draw_world] figure size: [{},{}]\n", fig_size_x, fig_size_y);
 
   if (!hold_on) {
-    figure_ = matplot::figure(true);
-    ax_ = figure_->add_axes();
+    // figure_ = matplot::figure(true);
+    // ax_ = figure_->add_axes();
+    matplot::gca()->clear();
   }
   // h->size(fig_size_x, fig_size_y);
 
@@ -43,7 +44,8 @@ void Visualizer::draw_world(const World& world, const Robot& robot, const Partic
   ax_->yticks({});
   figure_->name("robot world");
   figure_->draw();
-  figure_->title(fmt::format("{} particles", particles.size()));
+
+  // figure_->title(fmt::format("{} particles", particles.size()));
 
   std::vector<double> landmark_x;
   std::vector<double> landmark_y;
@@ -55,7 +57,7 @@ void Visualizer::draw_world(const World& world, const Robot& robot, const Partic
 
   ax_->plot(landmark_x, landmark_y, "bs")->line_width(2.0).marker_size(params_.landmark_size);
 
-  if (params_.draw_particle_pose_) {
+  if (params_.draw_particle_pose) {
     const auto radius_scale_factor = particles.size();
     for (const auto& p : particles) {
       add_pose2d(p.state, figure_, "r", radius_scale_factor);
@@ -82,10 +84,12 @@ void Visualizer::add_pose2d(const Eigen::Vector3d& pose, matplot::figure_handle 
                             std::string_view color, double radius) {
   matplot::figure(figure);
 
-  matplot::ellipse(pose.x(), pose.y(), radius, radius)->fill(true).color(color);
+  matplot::ellipse(pose.x() - radius, pose.y() - radius, 2.0 * radius, 2.0 * radius)
+    ->fill(true)
+    .color(color);
   const double x1 = pose.x();
   const double x2 = x1 + radius * cos(pose.z());
   const double y1 = pose.y();
   const double y2 = y1 + radius * sin(pose.z());
-  matplot::gca()->plot({x1, x2}, {y1, y2})->color(color);
+  matplot::gca()->plot({x1, x2}, {y1, y2})->color("blue").line_width(2.0);
 }

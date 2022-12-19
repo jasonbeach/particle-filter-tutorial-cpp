@@ -85,6 +85,8 @@ Particle ParticleFilter::validate_state(const Particle& particle) {
 
 void ParticleFilter::set_particles(const ParticleList& particles) { particles_ = particles; }
 
+const ParticleList& ParticleFilter::particles() const { return particles_; }
+
 Eigen::Vector3d ParticleFilter::get_average_state() const {
   // compute sum of all weights
   const auto sum_weights =

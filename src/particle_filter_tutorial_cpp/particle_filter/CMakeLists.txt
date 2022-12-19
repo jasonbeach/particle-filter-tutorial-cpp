@@ -3,6 +3,7 @@ target_sources(${PROJECT_NAME}
     particle_filter.types.cpp
     particle_filter.base.cpp
     particle_filter.adaptive_kld.cpp
+    particle_filter.sir.cpp
 )
 
 install(
@@ -10,6 +11,7 @@ install(
     particle_filter.types.hpp
     particle_filter.base.hpp
     particle_filter.adaptive_kld.hpp
+    particle_filter.sir.hpp
   DESTINATION
     ${PROJECT_INSTALL_INCLUDE_DIR}/particle_filter
   COMPONENT 
@@ -30,6 +32,17 @@ target_link_libraries(
   PRIVATE
     pf::particle_filter_tutorial_cpp
 )
+
+add_executable(demo_running_example
+  particle_filter.sir.main.cpp
+)
+
+target_link_libraries(
+    demo_running_example
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
+
 
 install(TARGETS particle_filter_main
   LIBRARY 

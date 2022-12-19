@@ -12,7 +12,7 @@ class Visualizer {
     double x_margin = 1.0;
     double y_margin = 1.0;
     double circle_radius_robot = 0.02;
-    bool draw_particle_pose_ = false;
+    bool draw_particle_pose = false;
     double landmark_size = 6.0;
     double scale = 2.0;
     double robot_arrow_length = 0.5 / scale;

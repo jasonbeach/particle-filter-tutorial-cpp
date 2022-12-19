@@ -71,6 +71,13 @@ class ParticleFilter {
   void set_particles(const ParticleList& particles);
 
   /**
+   * @brief get particles
+   *
+   * @return const ParticleList&
+   */
+  const ParticleList& particles() const;
+
+  /**
    * @brief Compute average state according to all weighted particles
    *
    * @return Eigen::Vector3d Average x-position, y-position and orientation
