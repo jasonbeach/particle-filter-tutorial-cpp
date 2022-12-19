@@ -55,10 +55,12 @@ void Visualizer::draw_world(const World& world, const Robot& robot, const Partic
     landmark_y.push_back(l.y());
   }
 
-  ax_->plot(landmark_x, landmark_y, "bs")->line_width(2.0).marker_size(params_.landmark_size);
+  ax_->plot(landmark_x, landmark_y, "bs")
+    ->line_width(2.0)
+    .marker_size(static_cast<float>(params_.landmark_size));
 
   if (params_.draw_particle_pose) {
-    const auto radius_scale_factor = particles.size();
+    const auto radius_scale_factor = static_cast<double>(particles.size());
     for (const auto& p : particles) {
       add_pose2d(p.state, figure_, "r", radius_scale_factor);
     }

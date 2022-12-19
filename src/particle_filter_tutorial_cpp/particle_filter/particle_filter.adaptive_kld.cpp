@@ -34,9 +34,10 @@ void AdaptiveParticleFilterKld::update(double robot_forward_motion, double robot
                                        const LandmarkList& landmarks) {
   ParticleList new_particles;
   std::unordered_set<Eigen::Vector3i, Vector3iHash> bins_with_support;
-  size_t number_of_required_particles = params_.min_number_of_particles;
+  double number_of_required_particles = static_cast<double>(params_.min_number_of_particles);
 
-  ssize_t num_particles_to_generate = number_of_required_particles - new_particles.size();
+  double num_particles_to_generate =
+    number_of_required_particles - static_cast<double>(new_particles.size());
   while (num_particles_to_generate > 0) {
     fmt::print("Number of required particles: {} new_particles size: {} number to generate: {}\n",
                number_of_required_particles, new_particles.size(), num_particles_to_generate);
@@ -69,22 +70,23 @@ void AdaptiveParticleFilterKld::update(double robot_forward_motion, double robot
       bins_with_support.insert(indices);
       return propagated_state;
     });
-    const size_t number_of_bins_with_support = bins_with_support.size();
+    const auto number_of_bins_with_support = static_cast<double>(bins_with_support.size());
     if (number_of_bins_with_support > 1) {
       number_of_required_particles = compute_required_number_of_particles(
         number_of_bins_with_support, params_.epsilon, params_.upper_quantile);
     }
     number_of_required_particles =
-      std::clamp(number_of_required_particles, params_.min_number_of_particles,
-                 params_.max_number_of_particles);
-    num_particles_to_generate = number_of_required_particles - new_particles.size();
+      std::clamp(number_of_required_particles, static_cast<double>(params_.min_number_of_particles),
+                 static_cast<double>(params_.max_number_of_particles));
+    num_particles_to_generate =
+      number_of_required_particles - static_cast<double>(new_particles.size());
   }
   particles_ = normalize_weights(new_particles);
 }
 
-size_t AdaptiveParticleFilterKld::compute_required_number_of_particles(size_t k, double epsilon,
+double AdaptiveParticleFilterKld::compute_required_number_of_particles(double k, double epsilon,
                                                                        double upper_quantile) {
   // Helper variable (part between curly brackets in (7) in Fox paper
-  double x = 1.0 - 2.0 / (9.0 * (k - 1)) + sqrt(2.0 / (9.0 * (k - 1))) * upper_quantile;
-  return ceil((k - 1) / (2.0 * epsilon) * x * x * x);
+  const double x = 1.0 - 2.0 / (9.0 * (k - 1.0)) + sqrt(2.0 / (9.0 * (k - 1.0))) * upper_quantile;
+  return ceil((k - 1.0) / (2.0 * epsilon) * x * x * x);
 }

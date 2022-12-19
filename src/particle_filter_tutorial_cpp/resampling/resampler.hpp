@@ -58,4 +58,4 @@ ParticleList resample_systematic(const ParticleList& samples, size_t N);
 
 enum class ResamplingAlgorithms { MULTINOMIAL, RESIDUAL, STRATIFIED, SYSTEMATIC };
 
-ParticleList resample_factory(const ParticleList samples, size_t N, ResamplingAlgorithms alg);
+ParticleList resample_factory(const ParticleList samples, double N, ResamplingAlgorithms alg);

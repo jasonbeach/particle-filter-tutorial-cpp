@@ -67,7 +67,7 @@ add_library(pf::${PROJECT_NAME} ALIAS ${PROJECT_NAME})
 # this must come after include dependencies so they don't build with them.
 target_compile_options(${PROJECT_NAME}
   PRIVATE
-    -Wall -Wextra -pedantic -Wcast-align -Wshadow #-Wconversion
+    -Wall -Wextra -pedantic -Wcast-align -Wshadow -Wconversion
 )
 
 # this adds this directory to the include path be that in a build or installed context

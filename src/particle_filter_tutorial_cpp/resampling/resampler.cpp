@@ -16,7 +16,7 @@ ParticleList resample_multinomial(const ParticleList& samples, size_t N) {
   static std::mt19937_64 gen(rd());
   static std::uniform_real_distribution<> dis(1e-6, 1.0);
 
-  const double new_weight = 1.0 / N;  // new weights will be uniform
+  const double new_weight = 1.0 / static_cast<double>(N);  // new weights will be uniform
   ParticleList new_samples;
   new_samples.reserve(N);
 
@@ -34,32 +34,33 @@ ParticleList resample_residual(const ParticleList& samples, size_t N) {
   ParticleList replication_samples;
 
   // this function is not fully optimized
-
+  const auto Nd = static_cast<double>(N);
   for (const auto& sample : samples) {
     const auto& [xm, wm] = sample;
-    const auto Nm = std::floor(N * wm);
-    weight_adjusted_samples.emplace_back(wm - Nm / N, xm);
+    const auto Nm = std::floor(Nd * wm);
+    weight_adjusted_samples.emplace_back(wm - Nm / Nd, xm);
     replication_samples.emplace_back(Nm, xm);
   }
 
   const auto new_samples_deterministic = replication(replication_samples);
-  const auto Nt = new_samples_deterministic.size();
+  const auto Nt = static_cast<double>(new_samples_deterministic.size());
 
-  if (N != Nt) {
-    const auto weight_adjustment = static_cast<double>(N) / static_cast<double>(N - Nt);
+  if (Nd != Nt) {
+    const auto weight_adjustment = Nd / (Nd - Nt);
     for (auto& s : weight_adjusted_samples) {
       s.weight *= weight_adjustment;
     }
   }
 
-  const auto new_samples_stochastic = resample_multinomial(weight_adjusted_samples, N - Nt);
+  const auto new_samples_stochastic =
+    resample_multinomial(weight_adjusted_samples, static_cast<size_t>(Nd - Nt));
 
   // concatenate deterministic sample and stochastic samples
   auto weighted_new_samples = new_samples_stochastic;
   weighted_new_samples.insert(weighted_new_samples.end(), new_samples_deterministic.begin(),
                               new_samples_deterministic.end());
 
-  const auto new_weight = 1.0 / weighted_new_samples.size();
+  const auto new_weight = 1.0 / static_cast<double>(weighted_new_samples.size());
   for (auto& s : weighted_new_samples) {
     s.weight = new_weight;
   }
@@ -124,7 +125,8 @@ ParticleList resample_systematic(const ParticleList& samples, size_t N) {
   return new_samples;
 }
 
-ParticleList resample_factory(const ParticleList samples, size_t N, ResamplingAlgorithms alg) {
+ParticleList resample_factory(const ParticleList samples, double Nd, ResamplingAlgorithms alg) {
+  const auto N = static_cast<size_t>(Nd);
   switch (alg) {
     case ResamplingAlgorithms::MULTINOMIAL: {
       return resample_multinomial(samples, N);

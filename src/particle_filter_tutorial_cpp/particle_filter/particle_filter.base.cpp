@@ -11,7 +11,7 @@ ParticleFilter::ParticleFilter(double num_particles, const LimitsParameters& lim
     limits_parameters_(limits),
     process_noise_parameters_(process_noise),
     measurement_noise_parameters_(measurement_noise),
-    particles_(num_particles),
+    particles_(static_cast<size_t>(num_particles)),
     num_particles_(num_particles) {
   if (num_particles_ < 1) {
     fmt::print("{}: initializing particle filter with number of particles < 1: {}\n",
@@ -115,14 +115,14 @@ void ParticleFilter::print_particles() const {
 }
 
 ParticleList ParticleFilter::normalize_weights(const ParticleList& particles) {
-  const auto num_particles = particles.size();
+  const auto num_particles = static_cast<double>(particles.size());
   // compute sum of all weights
   const auto sum_weights =
     std::accumulate(particles.begin(), particles.end(), 0.0,
                     [](double sum, const Particle& p) { return sum + p.weight; });
 
   ParticleList normalized_particles;
-  normalized_particles.reserve(num_particles);
+  normalized_particles.reserve(particles.size());
 
   if (const double new_weight = 1.0 / num_particles; sum_weights < 1e-15) {
     fmt::print(

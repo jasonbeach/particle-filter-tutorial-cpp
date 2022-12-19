@@ -71,8 +71,8 @@ class AdaptiveParticleFilterKld : public ParticleFilter {
    * @param epsilon: Maxmimum allowed distance (error) between true and estimated distribution.
    * @param upper_quantile: Upper standard normal distribution quantile for (1-delta) where delta is
    * the probability that the error on the estimated distribution will be less than epsilon.
-   * @return size_t Number of required particles.
+   * @return double Number of required particles.
    */
-  size_t compute_required_number_of_particles(size_t k, double epsilon, double upper_quantile);
+  double compute_required_number_of_particles(double k, double epsilon, double upper_quantile);
   Parameters params_;
 };
