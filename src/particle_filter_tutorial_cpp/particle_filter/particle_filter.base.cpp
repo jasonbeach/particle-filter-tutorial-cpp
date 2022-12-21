@@ -169,11 +169,6 @@ Particle ParticleFilter::propagate_sample(const Particle& sample, double forward
   return validate_state(propagated_sample);
 }
 
-// this should be in some utility header
-static constexpr double gaussian(double x, double mu, double sigma) {
-  return exp(-(x - mu) * (x - mu) / (2.0 * sigma * sigma));
-}
-
 double ParticleFilter::compute_likelihood(const Particle& sample,
                                           const MeasurementList& measurements,
                                           const LandmarkList& landmarks) {

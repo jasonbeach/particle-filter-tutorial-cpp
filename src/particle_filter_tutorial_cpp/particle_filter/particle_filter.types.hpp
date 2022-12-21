@@ -16,6 +16,11 @@ struct Particle {
 };
 using ParticleList = std::vector<Particle>;
 
+// this should be in some utility header
+constexpr double gaussian(double x, double mu, double sigma) {
+  return exp(-(x - mu) * (x - mu) / (2.0 * sigma * sigma));
+}
+
 namespace fmt {
 template <>
 struct formatter<Particle> {

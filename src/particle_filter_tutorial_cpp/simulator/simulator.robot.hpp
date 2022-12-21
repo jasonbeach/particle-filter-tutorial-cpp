@@ -2,7 +2,7 @@
 
 #include "particle_filter_tutorial_cpp/simulator/simulator.world.hpp"
 
-using Measurement = Eigen::Vector2d;
+using Measurement = Eigen::VectorXd;
 using MeasurementList = std::vector<Measurement>;
 
 class Robot {
@@ -16,6 +16,7 @@ class Robot {
 
   Robot() = default;
   Robot(const Eigen::Vector3d& initial_state, const Params& params);
+  virtual ~Robot() = default;
 
   /**
    * @brief Move the robot according to given arguments and within world of given dimensions. The
@@ -53,11 +54,11 @@ class Robot {
    * @return MeasurementList [[dist_to_landmark1, angle_wrt_landmark1], dist_to_landmark2,
    * angle_wrt_landmark2], ...]
    */
-  MeasurementList measure(const World& world) const;
+  virtual MeasurementList measure(const World& world) const;
 
   const Eigen::Vector3d& state() const;
 
- private:
+ protected:
   /**
    * @brief Get a random sample from a 1D Gaussian distribution with mean mu and standard deviation
    * sigma.

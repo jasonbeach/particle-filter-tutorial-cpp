@@ -127,8 +127,8 @@ class ParticleFilter {
    * @param landmarks Positions (absolute) landmarks (in meters)
    * @return double
    */
-  double compute_likelihood(const Particle& sample, const MeasurementList& measurements,
-                            const LandmarkList& landmarks);
+  virtual double compute_likelihood(const Particle& sample, const MeasurementList& measurements,
+                                    const LandmarkList& landmarks);
 
   /**
    * @brief Process a measurement given the measured robot displacement. Abstract method that must

@@ -28,7 +28,7 @@ MeasurementList Robot::measure(const World& world) const {
 
   std::transform(world.landmarks().begin(), world.landmarks().end(),
                  std::back_inserter(measurements), [this](const Landmark& landmark) {
-                   Measurement m;
+                   Measurement m {2};  // this robot produces range and bearing measurements
                    const auto dx = current_state_.x() - landmark.x();
                    const auto dy = current_state_.y() - landmark.y();
                    m.x() =
