@@ -1,6 +1,7 @@
 target_sources(${PROJECT_NAME}
   PRIVATE
     particle_filter.adaptive_kld.cpp
+    particle_filter.adaptive_sl.cpp
     particle_filter.base.cpp
     particle_filter.range_only.cpp
     particle_filter.sir.cpp
@@ -10,6 +11,7 @@ target_sources(${PROJECT_NAME}
 install(
   FILES 
     particle_filter.adaptive_kld.hpp
+    particle_filter.adaptive_sl.hpp
     particle_filter.base.hpp
     particle_filter.range_only.hpp
     particle_filter.sir.hpp
