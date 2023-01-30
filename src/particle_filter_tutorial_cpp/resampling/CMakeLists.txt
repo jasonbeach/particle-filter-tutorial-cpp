@@ -1,8 +1,3 @@
-target_sources(${PROJECT_NAME}
-  PRIVATE
-    resampler.helpers.cpp
-    resampler.cpp
-)
 
 install(
   FILES 
