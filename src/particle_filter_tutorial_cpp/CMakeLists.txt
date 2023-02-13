@@ -33,6 +33,16 @@ target_link_libraries(
     pf::particle_filter_tutorial_cpp
 )
 
+add_executable(demo_running_example_max_weight_resampling
+  particle_filter.max_weight_resampling.main.cpp
+)
+
+target_link_libraries(
+    demo_running_example_max_weight_resampling
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
+
 install(
   TARGETS 
     demo_running_example 

@@ -4,9 +4,10 @@ target_sources(${PROJECT_NAME}
     particle_filter.adaptive_sl.cpp
     particle_filter.auxiliary.cpp
     particle_filter.base.cpp
+    particle_filter.kalman.cpp
+    particle_filter.max_weight_resampling.cpp
     particle_filter.range_only.cpp
     particle_filter.sir.cpp
-    particle_filter.kalman.cpp
     particle_filter.types.cpp
 )
 
@@ -16,9 +17,10 @@ install(
     particle_filter.adaptive_sl.hpp
     particle_filter.auxiliary.hpp
     particle_filter.base.hpp
+    particle_filter.kalman.cpp
+    particle_filter.max_weight_resampling.hpp
     particle_filter.range_only.hpp
     particle_filter.sir.hpp
-    particle_filter.kalman.cpp
     particle_filter.types.hpp
   DESTINATION
     ${PROJECT_INSTALL_INCLUDE_DIR}/particle_filter

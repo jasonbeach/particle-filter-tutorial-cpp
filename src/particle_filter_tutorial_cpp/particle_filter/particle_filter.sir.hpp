@@ -12,7 +12,7 @@ class ParticleFilterSIR : public ParticleFilter {
     const ParticleFilter::MeasurementNoiseParameters& measurement_noise_params,
     ResamplingAlgorithms resampling_algorithm);
 
-  bool needs_resampling() const;
+  virtual bool needs_resampling() const;
 
   void update(double robot_forward_motion, double robot_angular_motion,
               const MeasurementList& measurements, const LandmarkList& landmarks) override;
