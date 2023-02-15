@@ -43,6 +43,16 @@ target_link_libraries(
     pf::particle_filter_tutorial_cpp
 )
 
+add_executable(demo_running_example_nepr
+  particle_filter.nepr.main.cpp
+)
+
+target_link_libraries(
+    demo_running_example_nepr
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
+
 install(
   TARGETS 
     demo_running_example 

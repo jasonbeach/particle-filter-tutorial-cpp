@@ -6,6 +6,7 @@ target_sources(${PROJECT_NAME}
     particle_filter.base.cpp
     particle_filter.kalman.cpp
     particle_filter.max_weight_resampling.cpp
+    particle_filter.nepr.cpp
     particle_filter.range_only.cpp
     particle_filter.sir.cpp
     particle_filter.types.cpp
@@ -19,6 +20,7 @@ install(
     particle_filter.base.hpp
     particle_filter.kalman.cpp
     particle_filter.max_weight_resampling.hpp
+    particle_filter.nepr.hpp
     particle_filter.range_only.hpp
     particle_filter.sir.hpp
     particle_filter.types.hpp
