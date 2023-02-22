@@ -12,18 +12,19 @@ bool ParticleFilterSIR::needs_resampling() const { return true; }
 
 void ParticleFilterSIR::update(double robot_forward_motion, double robot_angular_motion,
                                const MeasurementList& measurements, const LandmarkList& landmarks) {
-  ParticleList new_particles;
-  new_particles.reserve(particles().size());
+  ParticleList<SimpleParticle> new_particles;
+  new_particles.reserve(particles_.size());
 
   std::transform(particles_.begin(), particles_.end(), std::back_inserter(new_particles),
-                 [&](const Particle& par) {
+                 [&](const SimpleParticle& par) {
                    auto propagated_state =
                      propagate_sample(par, robot_forward_motion, robot_angular_motion);
                    propagated_state.weight =
                      par.weight * compute_likelihood(propagated_state, measurements, landmarks);
                    return propagated_state;
                  });
-  set_particles(normalize_weights(new_particles));
+  new_particles.normalize_weights();
+  set_particles(new_particles);
   if (needs_resampling()) {
     set_particles(resample_factory(particles_, num_particles_, resampler_));
   }

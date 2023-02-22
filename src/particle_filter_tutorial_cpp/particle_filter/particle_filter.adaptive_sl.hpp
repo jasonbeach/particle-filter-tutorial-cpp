@@ -2,7 +2,7 @@
 
 #include "particle_filter_tutorial_cpp/particle_filter/particle_filter.base.hpp"
 
-class AdaptiveParticleFilterSl : public ParticleFilter {
+class AdaptiveParticleFilterSl : public ParticleFilter<SimpleParticle> {
  public:
   /**
    * @brief Parameters for the adaptive particle filter using sum of likelihoods sampling proposed

@@ -2,7 +2,7 @@
 
 #include "particle_filter_tutorial_cpp/particle_filter/particle_filter.base.hpp"
 
-class AdaptiveParticleFilterKld : public ParticleFilter {
+class AdaptiveParticleFilterKld : public ParticleFilter<SimpleParticle> {
  public:
   /**
    * @brief Parameters for the adaptive particle filter using Kullback-Leibler divergence (KLD)

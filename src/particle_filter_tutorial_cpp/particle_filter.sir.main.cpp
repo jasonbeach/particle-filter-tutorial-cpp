@@ -4,6 +4,9 @@
 #include "particle_filter_tutorial_cpp/simulator/simulator.visualizer.hpp"
 
 using namespace std::chrono_literals;
+using LimitsParameters = ParticleFilter<SimpleParticle>::LimitsParameters;
+using ProcessNoiseParameters = ParticleFilter<SimpleParticle>::ProcessNoiseParameters;
+using MeasurementNoiseParameters = ParticleFilter<SimpleParticle>::MeasurementNoiseParameters;
 
 int main() {
   World world {{10.0, 10.0}, {{2.0, 2.0}, {2.0, 8.0}, {9.0, 2.0}, {8.0, 9.0}}};
@@ -49,9 +52,9 @@ int main() {
   Robot robot {initial_state, rp};
 
   const size_t number_of_particles = 1000;
-  const ParticleFilter::LimitsParameters lp {0, world.get_size().x(), 0, world.get_size().y()};
-  const ParticleFilter::ProcessNoiseParameters pnp {0.1, 0.20};
-  const ParticleFilter::MeasurementNoiseParameters mnp {0.4, 0.3};
+  const LimitsParameters lp {0, world.get_size().x(), 0, world.get_size().y()};
+  const ProcessNoiseParameters pnp {0.1, 0.20};
+  const MeasurementNoiseParameters mnp {0.4, 0.3};
   const auto resampling_algorithm = ResamplingAlgorithms::MULTINOMIAL;
 
   ParticleFilterSIR particle_filter_sir {number_of_particles, lp, pnp, mnp, resampling_algorithm};

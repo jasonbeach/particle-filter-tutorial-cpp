@@ -3,7 +3,7 @@
 #include "particle_filter_tutorial_cpp/particle_filter/particle_filter.base.hpp"
 #include "particle_filter_tutorial_cpp/resampling/resampler.hpp"
 
-class ParticleFilterSIR : public ParticleFilter {
+class ParticleFilterSIR : public ParticleFilter<SimpleParticle> {
  public:
   ParticleFilterSIR() = default;
   explicit ParticleFilterSIR(

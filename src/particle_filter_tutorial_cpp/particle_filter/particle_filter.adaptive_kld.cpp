@@ -32,7 +32,7 @@ AdaptiveParticleFilterKld::AdaptiveParticleFilterKld(
 void AdaptiveParticleFilterKld::update(double robot_forward_motion, double robot_angular_motion,
                                        const MeasurementList& measurements,
                                        const LandmarkList& landmarks) {
-  ParticleList new_particles;
+  ParticleList<SimpleParticle> new_particles;
   std::unordered_set<Eigen::Vector3i, Vector3iHash> bins_with_support;
   double number_of_required_particles = static_cast<double>(params_.min_number_of_particles);
 
@@ -81,7 +81,8 @@ void AdaptiveParticleFilterKld::update(double robot_forward_motion, double robot
     num_particles_to_generate =
       number_of_required_particles - static_cast<double>(new_particles.size());
   }
-  particles_ = normalize_weights(new_particles);
+  new_particles.normalize_weights();
+  particles_ = new_particles;
 }
 
 double AdaptiveParticleFilterKld::compute_required_number_of_particles(double k, double epsilon,

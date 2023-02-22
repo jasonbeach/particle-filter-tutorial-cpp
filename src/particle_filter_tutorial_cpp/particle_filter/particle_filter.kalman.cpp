@@ -5,10 +5,10 @@
 
 KalmanParticle::KalmanParticle(double weight_, const Eigen::Vector3d& state_,
                                Eigen::Matrix3d covariance_) :
-    Particle {weight_, state_}, covariance {covariance_} {}
+    SimpleParticle {weight_, state_}, covariance {covariance_} {}
 
 KalmanParticle::KalmanParticle(double weight_, const Eigen::Vector3d& state_) :
-    Particle {weight_, state_}, covariance {Eigen::Matrix3d::Identity()} {}
+    SimpleParticle {weight_, state_}, covariance {Eigen::Matrix3d::Identity()} {}
 
 ParticleFilterKalman::ParticleFilterKalman(
   double number_of_particles, const LimitsParameters& limits,
@@ -166,9 +166,8 @@ void ParticleFilterKalman::update(double robot_forward_motion, double robot_angu
   if (sum_weights < 1e-10) {
     fmt::print("Warning: sum particles weights very low\n");
   }
-  for (auto& particle : new_particles) {
-    particle.weight /= sum_weights;
-  }
+  new_particles.normalize_weights();
+
   particles_ = new_particles;
   multinomial_resampling();
 }

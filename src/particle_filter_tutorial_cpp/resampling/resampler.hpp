@@ -11,10 +11,11 @@
  *
  * @param samples Samples that must be resampled.
  * @param N Number of samples that must be generated.
- * @return std::vector<ParticleType> Resampled weighted particles.
+ * @return ParticleList<ParticleType> Resampled weighted particles.
  */
 template <class ParticleType>
-std::vector<ParticleType> resample_multinomial(const std::vector<ParticleType>& samples, size_t N) {
+ParticleList<ParticleType> resample_multinomial(const ParticleList<ParticleType>& samples,
+                                                size_t N) {
   // compute cumulative weight sums.  This converts each weight to a "bucket" proportional to the
   // magnitude of the weight. so when we uniformly pick a random number between 0 and 1, the larger
   // each particles weight (or bucket) is the more likely it is for the random number to fall into
@@ -26,7 +27,7 @@ std::vector<ParticleType> resample_multinomial(const std::vector<ParticleType>& 
   static std::uniform_real_distribution<> dis(1e-6, 1.0);
 
   const double new_weight = 1.0 / static_cast<double>(N);  // new weights will be uniform
-  std::vector<ParticleType> new_samples;
+  ParticleList<ParticleType> new_samples;
   new_samples.reserve(N);
 
   std::generate_n(std::back_inserter(new_samples), N, [&]() {
@@ -48,12 +49,12 @@ std::vector<ParticleType> resample_multinomial(const std::vector<ParticleType>& 
  *
  * @param samples Samples that must be resampled.
  * @param N Number of samples that must be generated.
- * @return std::vector<ParticleType> Resampled weighted particles.
+ * @return ParticleList<ParticleType> Resampled weighted particles.
  */
 template <class ParticleType>
-std::vector<ParticleType> resample_residual(const std::vector<ParticleType>& samples, size_t N) {
-  std::vector<ParticleType> weight_adjusted_samples;
-  std::vector<ParticleType> replication_samples;
+ParticleList<ParticleType> resample_residual(const ParticleList<ParticleType>& samples, size_t N) {
+  ParticleList<ParticleType> weight_adjusted_samples;
+  ParticleList<ParticleType> replication_samples;
 
   // this function is not fully optimized
   const auto Nd = static_cast<double>(N);
@@ -98,17 +99,18 @@ std::vector<ParticleType> resample_residual(const std::vector<ParticleType>& sam
  *
  * @param samples Samples that must be resampled.
  * @param N Number of samples that must be generated.
- * @return std::vector<ParticleType> Resampled weighted particles.
+ * @return ParticleList<ParticleType> Resampled weighted particles.
  */
 template <class ParticleType>
-std::vector<ParticleType> resample_stratified(const std::vector<ParticleType>& samples, size_t N) {
+ParticleList<ParticleType> resample_stratified(const ParticleList<ParticleType>& samples,
+                                               size_t N) {
   const auto new_weight = 1.0 / static_cast<double>(N);
   static std::random_device rd;
   static std::mt19937_64 gen(rd());
   static std::uniform_real_distribution<> dis(1e-10, new_weight);
 
   const auto Q = cumulative_sum(samples);
-  std::vector<ParticleType> new_samples;
+  ParticleList<ParticleType> new_samples;
   new_samples.reserve(N);
 
   size_t n = 0;
@@ -118,13 +120,13 @@ std::vector<ParticleType> resample_stratified(const std::vector<ParticleType>& s
     const auto u0 = dis(gen);
     const auto u = u0 + static_cast<double>(n) / static_cast<double>(N);
 
-    // u increases every loop hence we only move from left to right (once) while iterating Q
-    // Get first sample for which cumulative sum is above u
+    // u increases every loop hence we only move from left to right (once) while
+    // iterating Q Get first sample for which cumulative sum is above u
     while (m->weight < u && m != Q.end()) {
       m++;  // no need to reset m, u always increases
     }
     n++;
-    return Particle {new_weight, m->state};
+    return ParticleType {new_weight, m->state};
   });
   return new_samples;
 }
@@ -138,17 +140,18 @@ std::vector<ParticleType> resample_stratified(const std::vector<ParticleType>& s
  *
  * @param samples Samples that must be resampled.
  * @param N Number of samples that must be generated.
- * @return std::vector<ParticleType> Resampled weighted particles.
+ * @return ParticleList<ParticleType> Resampled weighted particles.
  */
 template <class ParticleType>
-std::vector<ParticleType> resample_systematic(const std::vector<ParticleType>& samples, size_t N) {
+ParticleList<ParticleType> resample_systematic(const ParticleList<ParticleType>& samples,
+                                               size_t N) {
   const auto new_weight = 1.0 / static_cast<double>(N);
   static std::random_device rd;
   static std::mt19937_64 gen(rd());
   static std::uniform_real_distribution<> dis(1e-10, new_weight);
 
   const auto Q = cumulative_sum(samples);
-  std::vector<ParticleType> new_samples;
+  ParticleList<ParticleType> new_samples;
   new_samples.reserve(N);
 
   const auto u0 = dis(gen);  // draw only one sample
@@ -159,13 +162,13 @@ std::vector<ParticleType> resample_systematic(const std::vector<ParticleType>& s
     // Compute u for current particle (deterministic given u0)
     const auto u = u0 + static_cast<double>(n) / static_cast<double>(N);
 
-    // u increases every loop hence we only move from left to right (once) while iterating Q
-    // Get first sample for which cumulative sum is above u
+    // u increases every loop hence we only move from left to right (once) while
+    // iterating Q Get first sample for which cumulative sum is above u
     while (m->weight < u && m != Q.end()) {
       m++;  // no need to reset m, u always increases
     }
     n++;
-    return Particle {new_weight, m->state};
+    return ParticleType {new_weight, m->state};
   });
   return new_samples;
 }
@@ -173,8 +176,8 @@ std::vector<ParticleType> resample_systematic(const std::vector<ParticleType>& s
 enum class ResamplingAlgorithms { MULTINOMIAL, RESIDUAL, STRATIFIED, SYSTEMATIC };
 
 template <class ParticleType>
-std::vector<ParticleType> resample_factory(const std::vector<ParticleType> samples, double Nd,
-                                           ResamplingAlgorithms alg) {
+ParticleList<ParticleType> resample_factory(const ParticleList<ParticleType> samples, double Nd,
+                                            ResamplingAlgorithms alg) {
   const auto N = static_cast<size_t>(Nd);
   switch (alg) {
     case ResamplingAlgorithms::MULTINOMIAL: {

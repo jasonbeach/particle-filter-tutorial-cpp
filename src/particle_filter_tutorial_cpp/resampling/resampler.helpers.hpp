@@ -11,13 +11,12 @@
  * @tparam ParticleType particle type. Type must have `state` and `weight` members as well as a two
  * argument constructor to initialize those two members
  * @param samples list with weights
- * @return std::vector<ParticleType> list containing cumulative weights, length equal to length
+ * @return ParticleList<ParticleType> list containing cumulative weights, length equal to length
  * input
  */
 template <typename ParticleType>
-std::vector<ParticleType> cumulative_sum(const std::vector<ParticleType>& samples) {
-  std::vector<ParticleType> cumulative_weights;
-  cumulative_weights.reserve(samples.size());  // pre-allocate sample list
+ParticleList<ParticleType> cumulative_sum(const ParticleList<ParticleType>& samples) {
+  ParticleList<ParticleType> cumulative_weights {samples.size()};
 
   double cum_sum = 0;
   std::transform(samples.begin(), samples.end(), std::back_inserter(cumulative_weights),
@@ -37,7 +36,7 @@ std::vector<ParticleType> cumulative_sum(const std::vector<ParticleType>& sample
  * @return iterator to element
  */
 template <class ParticleType>
-auto naive_search(const std::vector<ParticleType>& cumulative_list, double x) {
+auto naive_search(const ParticleList<ParticleType>& cumulative_list, double x) {
   if (cumulative_list.empty()) {
     throw std::runtime_error("provided list is empty");
   }
@@ -60,7 +59,7 @@ auto naive_search(const std::vector<ParticleType>& cumulative_list, double x) {
  * @return size_t Index
  */
 template <class ParticleType>
-auto binary_search(const std::vector<ParticleType>& cumulative_list, double x) {
+auto binary_search(const ParticleList<ParticleType>& cumulative_list, double x) {
   if (cumulative_list.empty()) {
     throw std::runtime_error("provided list is empty");
   }
@@ -73,7 +72,7 @@ auto binary_search(const std::vector<ParticleType>& cumulative_list, double x) {
 }
 
 template <class ParticleType>
-auto draw_sample_by_weight(const std::vector<ParticleType>& cumulative_list) {
+auto draw_sample_by_weight(const ParticleList<ParticleType>& cumulative_list) {
   static std::random_device rd;
   static std::mt19937_64 gen(rd());
 
@@ -110,8 +109,8 @@ ssize_t roundi(T x) {
  * @return ParticleList of replicated samples with uninitialized weights
  */
 template <class ParticleType>
-auto replication(const std::vector<ParticleType>& samples) {
-  std::vector<ParticleType> replicated_samples;
+auto replication(const ParticleList<ParticleType>& samples) {
+  ParticleList<ParticleType> replicated_samples;
 
   for (const auto& sample : samples) {
     ssize_t Nk = roundi(sample.weight);  // attempt at robustly converting float to int

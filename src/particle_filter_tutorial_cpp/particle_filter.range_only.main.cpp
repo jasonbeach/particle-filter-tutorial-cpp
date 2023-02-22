@@ -4,6 +4,9 @@
 #include "thread"
 
 using namespace std::chrono_literals;
+using LimitsParameters = ParticleFilter<SimpleParticle>::LimitsParameters;
+using ProcessNoiseParameters = ParticleFilter<SimpleParticle>::ProcessNoiseParameters;
+using MeasurementNoiseParameters = ParticleFilter<SimpleParticle>::MeasurementNoiseParameters;
 
 int main() {
   const World world {{10.0, 10.0}, {{2.5, 2.5}, {7.5, 7.5}}};
@@ -45,19 +48,17 @@ int main() {
   ////
 
   const double number_of_particles = 1000;
-  ParticleFilter::LimitsParameters pf_state_limits {0.0, world.get_size().x(), 0.0,
-                                                    world.get_size().y()};
+  LimitsParameters pf_state_limits {0.0, world.get_size().x(), 0.0, world.get_size().y()};
 
   // Process model noise (zero mean additive Gaussian noise)
   const double motion_model_forward_std = 0.1;
   const double motion_model_turn_std = 0.20;
-  ParticleFilter::ProcessNoiseParameters process_noise {motion_model_forward_std,
-                                                        motion_model_turn_std};
+  ProcessNoiseParameters process_noise {motion_model_forward_std, motion_model_turn_std};
 
   // Measurement noise (zero mean additive Gaussian noise)
   const double meas_model_distance_std = 0.4;
   // const double meas_model_angle_std = 0.3;
-  ParticleFilter::MeasurementNoiseParameters measurement_noise {meas_model_distance_std, 0.0};
+  MeasurementNoiseParameters measurement_noise {meas_model_distance_std, 0.0};
 
   // Set resampling algorithm used
   ResamplingAlgorithms algorithm = ResamplingAlgorithms::MULTINOMIAL;

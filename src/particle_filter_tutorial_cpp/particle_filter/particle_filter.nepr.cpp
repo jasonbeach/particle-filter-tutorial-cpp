@@ -12,7 +12,7 @@ ParticleFilterNEPR::ParticleFilterNEPR(
 bool ParticleFilterNEPR::needs_resampling() const {
   const double sum_weights_squared = std::accumulate(
     particles().begin(), particles().end(), 0.0,
-    [](double sum, const Particle& sample) { return sum += sample.weight * sample.weight; });
+    [](double sum, const SimpleParticle& sample) { return sum += sample.weight * sample.weight; });
 
   return 1.0 / sum_weights_squared < number_of_effective_particles_threshold_;
 }

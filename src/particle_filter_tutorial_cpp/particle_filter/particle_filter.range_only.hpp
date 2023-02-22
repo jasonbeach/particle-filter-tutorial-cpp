@@ -2,7 +2,7 @@
 #include "particle_filter_tutorial_cpp/particle_filter/particle_filter.base.hpp"
 #include "particle_filter_tutorial_cpp/resampling/resampler.hpp"
 
-class ParticleFilterRangeOnly : public ParticleFilter {
+class ParticleFilterRangeOnly : public ParticleFilter<SimpleParticle> {
  public:
   ParticleFilterRangeOnly() = default;
   ParticleFilterRangeOnly(double num_particles, const ParticleFilter::LimitsParameters& limits,
@@ -12,7 +12,7 @@ class ParticleFilterRangeOnly : public ParticleFilter {
 
   bool needs_resampling() const;
 
-  double compute_likelihood(const Particle& sample, const MeasurementList& measurements,
+  double compute_likelihood(const SimpleParticle& sample, const MeasurementList& measurements,
                             const LandmarkList& landmarks) override;
 
   void update(double robot_forward_motion, double robot_angular_motion,

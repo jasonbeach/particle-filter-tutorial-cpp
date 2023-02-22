@@ -3,7 +3,7 @@
 #include "particle_filter_tutorial_cpp/particle_filter/particle_filter.base.hpp"
 #include "particle_filter_tutorial_cpp/resampling/resampler.hpp"
 
-struct KalmanParticle : public Particle {
+struct KalmanParticle : public SimpleParticle {
   Eigen::Matrix3d covariance = Eigen::Matrix3d::Identity();
 
   KalmanParticle() = default;
@@ -11,7 +11,7 @@ struct KalmanParticle : public Particle {
   KalmanParticle(double weight_, const Eigen::Vector3d& state_);
 };
 
-using KalmanParticleList = std::vector<KalmanParticle>;
+using KalmanParticleList = ParticleList<KalmanParticle>;
 /**
  * @brief Notes:
  * - State is (x, y, heading), where x and y are in meters and heading in radians

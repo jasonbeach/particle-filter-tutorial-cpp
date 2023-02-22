@@ -11,8 +11,7 @@ AdaptiveParticleFilterSl::AdaptiveParticleFilterSl(
 void AdaptiveParticleFilterSl::update(double robot_forward_motion, double robot_angular_motion,
                                       const MeasurementList& measurements,
                                       const LandmarkList& landmarks) {
-  ParticleList new_particles;
-  new_particles.reserve(params_.max_number_of_particles);
+  ParticleList<SimpleParticle> new_particles {params_.max_number_of_particles};
   double sum_likelihoods = 0.0;
 
   while (sum_likelihoods < params_.sum_likelihoods_threshold &&
@@ -23,5 +22,6 @@ void AdaptiveParticleFilterSl::update(double robot_forward_motion, double robot_
     sum_likelihoods += propagated_sample.weight;
     new_particles.push_back(propagated_sample);
   }
-  particles_ = normalize_weights(new_particles);
+  new_particles.normalize_weights();
+  particles_ = new_particles;
 }

@@ -10,10 +10,11 @@ ParticleFilterMWR::ParticleFilterMWR(
     resampling_threshold_(resampling_threshold) {}
 
 bool ParticleFilterMWR::needs_resampling() const {
-  const auto max_element = std::max_element(particles().begin(), particles().end(),
-                                            [](const Particle& sample1, const Particle& sample2) {
-                                              return sample1.weight < sample2.weight;
-                                            });
+  const auto max_element =
+    std::max_element(particles().begin(), particles().end(),
+                     [](const SimpleParticle& sample1, const SimpleParticle& sample2) {
+                       return sample1.weight < sample2.weight;
+                     });
 
   return 1.0 / max_element->weight < resampling_threshold_;
 }
