@@ -175,10 +175,26 @@ ParticleList<ParticleType> resample_systematic(const ParticleList<ParticleType>&
 
 enum class ResamplingAlgorithms { MULTINOMIAL, RESIDUAL, STRATIFIED, SYSTEMATIC };
 
+inline std::string_view resampling_algorithms_str(ResamplingAlgorithms alg) {
+  switch (alg) {
+    case ResamplingAlgorithms::MULTINOMIAL:
+      return "MULTINOMIAL";
+    case ResamplingAlgorithms::RESIDUAL:
+      return "RESIDUAL";
+    case ResamplingAlgorithms::STRATIFIED:
+      return "STRATIFIED";
+    case ResamplingAlgorithms::SYSTEMATIC:
+      return "SYSTEMATIC";
+    default:
+      return "unknown";
+  };
+}
+
 template <class ParticleType>
 ParticleList<ParticleType> resample_factory(const ParticleList<ParticleType> samples, double Nd,
                                             ResamplingAlgorithms alg) {
   const auto N = static_cast<size_t>(Nd);
+
   switch (alg) {
     case ResamplingAlgorithms::MULTINOMIAL: {
       return resample_multinomial(samples, N);
@@ -190,7 +206,7 @@ ParticleList<ParticleType> resample_factory(const ParticleList<ParticleType> sam
       return resample_stratified(samples, N);
     }
     case ResamplingAlgorithms::SYSTEMATIC: {
-      return resample_stratified(samples, N);
+      return resample_systematic(samples, N);
     }
     default: {
       throw std::runtime_error("unknown resample algorithm given");

@@ -53,11 +53,28 @@ target_link_libraries(
     pf::particle_filter_tutorial_cpp
 )
 
+add_executable(challenge1_compare_resampling_alorithms
+  challenge1_compare_resampling_alorithms.main.cpp
+)
+
+target_link_libraries(
+    challenge1_compare_resampling_alorithms
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
+
+
+
+
+
 install(
   TARGETS 
     demo_running_example 
     demo_range_only
     demo_running_example_extended_Kalman_particle_filter
+    demo_running_example_max_weight_resampling
+    demo_running_example_nepr
+    challenge1_compare_resampling_alorithms
   RUNTIME
     DESTINATION ${PROJECT_INSTALL_BIN_DIR}
     COMPONENT ${PROJECT_NAME}_RunTime

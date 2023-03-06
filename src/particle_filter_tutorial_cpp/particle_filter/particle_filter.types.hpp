@@ -6,12 +6,13 @@
 #include "Eigen/Dense"
 #include "fmt/color.h"
 #include "fmt/format.h"
+#include "fmt/ostream.h"
 #include "particle_filter_tutorial_cpp/simulator/simulator.robot.hpp"
 #include "particle_filter_tutorial_cpp/simulator/simulator.world.hpp"
 
 struct SimpleParticle {
   SimpleParticle() = default;
-  SimpleParticle(double weight_, const Eigen::Vector3d state_);
+  SimpleParticle(double weight_, const Eigen::Vector3d& state_);
   // shouldn't hardcode state vector as size 3, but ok for now: x, y, theta
   Eigen::Vector3d state;
   double weight;
@@ -116,26 +117,28 @@ struct formatter<SimpleParticle> {
   }
 
   template <typename FormatContext>
-  auto format(const SimpleParticle& p, FormatContext& ctx) {
+  auto format(const SimpleParticle& p, FormatContext& ctx) const {
     return format_to(ctx.out(), "{:.1f},{:.1f},{:.1f} with w:{:.6f}", p.state.x(), p.state.y(),
                      p.state.z() * 180.0 / M_PI, p.weight);
   }
 };
 
 template <class ParticleType>
-struct formatter<ParticleList<ParticleType> > {
+struct formatter<ParticleList<ParticleType>> {
   template <typename ParseContext>
   constexpr auto parse(ParseContext& ctx) {
     return ctx.begin();
   }
 
   template <typename FormatContext>
-  auto format(const ParticleList<ParticleType>& list, FormatContext& ctx) {
-    return format_to(ctx.out(), "particles:\n  {}",
-                     fmt::join(list.particles().begin(), list.particles().end(), "\n  "));
+  auto format(const ParticleList<ParticleType>& list, FormatContext& ctx) const {
+    return format_to(ctx.out(), "particles:\n  {}", fmt::join(list.begin(), list.end(), "\n  "));
   }
 };
 
+template <typename T>
+struct formatter<T, std::enable_if_t<std::is_base_of_v<Eigen::DenseBase<T>, T>, char>>
+    : ostream_formatter {};
 }  // namespace fmt
 
 /**
