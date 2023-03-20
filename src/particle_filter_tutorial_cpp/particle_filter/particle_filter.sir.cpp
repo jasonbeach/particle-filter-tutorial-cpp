@@ -6,9 +6,16 @@ ParticleFilterSIR::ParticleFilterSIR(
   const ParticleFilter::MeasurementNoiseParameters& measurement_noise_params,
   ResamplingAlgorithms resampling_algorithm) :
     ParticleFilter(number_of_particles, limits, process_noise_params, measurement_noise_params),
-    resampler_(resampling_algorithm) {}
+    resampler_(resampling_algorithm),
+    needs_resampling_ {[]() { return true; }} {}
 
-bool ParticleFilterSIR::needs_resampling() const { return true; }
+bool ParticleFilterSIR::needs_resampling() const {
+  if (!needs_resampling_) {
+    throw std::runtime_error {"needs resampling function not set"};
+  }
+
+  return needs_resampling_();
+}
 
 void ParticleFilterSIR::update(double robot_forward_motion, double robot_angular_motion,
                                const MeasurementList& measurements, const LandmarkList& landmarks) {
@@ -28,4 +35,8 @@ void ParticleFilterSIR::update(double robot_forward_motion, double robot_angular
   if (needs_resampling()) {
     set_particles(resample_factory(particles_, num_particles_, resampler_));
   }
+}
+
+void ParticleFilterSIR::set_needs_resampling_function(const ResampleFunction& needs_resampling) {
+  needs_resampling_ = needs_resampling;
 }

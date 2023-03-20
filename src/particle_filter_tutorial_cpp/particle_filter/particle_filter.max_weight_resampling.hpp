@@ -28,21 +28,4 @@ class ParticleFilterMWR : public ParticleFilterSIR {
                     const ParticleFilter::ProcessNoiseParameters& process_noise_params,
                     const ParticleFilter::MeasurementNoiseParameters& measurement_noise_params,
                     const ResamplingAlgorithms resample_algorithm, double resampling_threshold);
-
-  /**
-   * @brief         Override method that determines whether or not a core step is needed for the
-   * current particle filter state estimate. Resampling only occurs if the reciprocal of the maximum
-   * particle weight falls below the user-specified threshold. The reciprocal of the maximum weight
-   * is defined by P_N^2 in [1].
-   *
-   * [1] Martino, Luca, Victor Elvira, and Francisco Louzada. "Effective sample size for importance
-   * sampling based on discrepancy measures." Signal Processing 131 (2017): 386-401.
-   *
-   * @return true needs resampling
-   * @return false does not need resampling
-   */
-  bool needs_resampling() const override;
-
- private:
-  double resampling_threshold_ = 0.0;
 };

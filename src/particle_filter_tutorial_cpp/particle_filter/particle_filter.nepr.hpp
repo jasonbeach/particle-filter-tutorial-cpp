@@ -28,21 +28,4 @@ class ParticleFilterNEPR : public ParticleFilterSIR {
                      const ParticleFilter::MeasurementNoiseParameters& measurement_noise_params,
                      const ResamplingAlgorithms resample_algorithm,
                      double number_of_effective_particles_threshold);
-
-  /**
-   * @brief Override method that determines whether or not a step is needed for the current particle
-   * filter state estimate. Resampling only occurs if the approximated number of effective particles
-   * falls below the user-specified threshold. Approximate number of effective particles: 1 /
-   * (sum_i^N wi^2), P_N^2 in [1].
-   *
-   * [1] Martino, Luca, Victor Elvira, and Francisco Louzada. "Effective sample size for importance
-   * sampling based on discrepancy measures." Signal Processing 131 (2017): 386-401.
-   *
-   * @return true needs resampling
-   * @return false does not need resampling
-   */
-  bool needs_resampling() const override;
-
- private:
-  double number_of_effective_particles_threshold_ = 0.0;
 };
