@@ -63,9 +63,25 @@ target_link_libraries(
     pf::particle_filter_tutorial_cpp
 )
 
+add_executable(challenge1_compare_resampling_schemes
+  challenge1_compare_resampling_schemes.main.cpp
+)
 
+target_link_libraries(
+    challenge1_compare_resampling_schemes
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
 
+add_executable(challenge1_degeneracy
+  challenge1_degeneracy.main.cpp
+)
 
+target_link_libraries(
+    challenge1_degeneracy
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
 
 install(
   TARGETS 
@@ -75,6 +91,8 @@ install(
     demo_running_example_max_weight_resampling
     demo_running_example_nepr
     challenge1_compare_resampling_alorithms
+    challenge1_compare_resampling_schemes
+    challenge1_degeneracy
   RUNTIME
     DESTINATION ${PROJECT_INSTALL_BIN_DIR}
     COMPONENT ${PROJECT_NAME}_RunTime
