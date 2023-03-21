@@ -17,7 +17,7 @@ class Visualizer {
     double scale = 2.0;
     double robot_arrow_length = 0.5 / scale;
   };
-  Visualizer() = default;
+  Visualizer();
   Visualizer(const Params& p);
 
   void update_robot_radius(double robot_radius);

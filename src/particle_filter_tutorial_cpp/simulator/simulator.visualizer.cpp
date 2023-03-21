@@ -1,5 +1,7 @@
 #include "particle_filter_tutorial_cpp/simulator/simulator.visualizer.hpp"
 
+Visualizer::Visualizer() : Visualizer(Params()) {}
+
 Visualizer::Visualizer(const Params& p) :
     params_ {p}, figure_ {matplot::figure(true)}, ax_ {figure_->add_axes()} {}
 
