@@ -93,6 +93,16 @@ target_link_libraries(
     pf::particle_filter_tutorial_cpp
 )
 
+add_executable(challenge3_divergence
+  challenge3_divergence.main.cpp
+)
+
+target_link_libraries(
+    challenge3_divergence
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
+
 install(
   TARGETS 
     demo_running_example 
@@ -104,6 +114,7 @@ install(
     challenge1_compare_resampling_schemes
     challenge1_degeneracy
     challenge2_impoverishment
+    challenge3_divergence
   RUNTIME
     DESTINATION ${PROJECT_INSTALL_BIN_DIR}
     COMPONENT ${PROJECT_NAME}_RunTime
