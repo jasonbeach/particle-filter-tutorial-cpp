@@ -83,6 +83,16 @@ target_link_libraries(
     pf::particle_filter_tutorial_cpp
 )
 
+add_executable(challenge2_impoverishment
+  challenge2_impoverishment.main.cpp
+)
+
+target_link_libraries(
+    challenge2_impoverishment
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
+
 install(
   TARGETS 
     demo_running_example 
@@ -93,6 +103,7 @@ install(
     challenge1_compare_resampling_alorithms
     challenge1_compare_resampling_schemes
     challenge1_degeneracy
+    challenge2_impoverishment
   RUNTIME
     DESTINATION ${PROJECT_INSTALL_BIN_DIR}
     COMPONENT ${PROJECT_NAME}_RunTime
