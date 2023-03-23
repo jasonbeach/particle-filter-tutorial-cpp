@@ -103,6 +103,16 @@ target_link_libraries(
     pf::particle_filter_tutorial_cpp
 )
 
+add_executable(challenge5_adaptive_particle_filter
+  challenge5_adaptive_particle_filter.main.cpp
+)
+
+target_link_libraries(
+    challenge5_adaptive_particle_filter
+  PRIVATE
+    pf::particle_filter_tutorial_cpp
+)
+
 install(
   TARGETS 
     demo_running_example 
@@ -115,6 +125,7 @@ install(
     challenge1_degeneracy
     challenge2_impoverishment
     challenge3_divergence
+    challenge5_adaptive_particle_filter
   RUNTIME
     DESTINATION ${PROJECT_INSTALL_BIN_DIR}
     COMPONENT ${PROJECT_NAME}_RunTime

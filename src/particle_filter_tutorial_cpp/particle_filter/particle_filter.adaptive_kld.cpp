@@ -39,9 +39,6 @@ void AdaptiveParticleFilterKld::update(double robot_forward_motion, double robot
   double num_particles_to_generate =
     number_of_required_particles - static_cast<double>(new_particles.size());
   while (num_particles_to_generate > 0) {
-    fmt::print("Number of required particles: {} new_particles size: {} number to generate: {}\n",
-               number_of_required_particles, new_particles.size(), num_particles_to_generate);
-
     std::generate_n(std::back_inserter(new_particles), num_particles_to_generate, [&]() {
       // Get sample from discrete distribution given by particle weights
       const auto random_sample = draw_sample_by_weight(particles_);
