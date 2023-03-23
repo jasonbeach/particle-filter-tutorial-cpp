@@ -40,8 +40,11 @@ auto naive_search(const ParticleList<ParticleType>& cumulative_list, double x) {
   if (cumulative_list.empty()) {
     throw std::runtime_error("provided list is empty");
   }
+
   if (x > cumulative_list.back().weight) {
-    throw std::runtime_error("x is outside of cumulative list range");
+    throw std::runtime_error(
+      fmt::format("x is outside of cumulative list range. x: {} back:{} max: {}", x,
+                  cumulative_list.back().weight, cumulative_list.get_max_weight()));
   }
 
   auto m = cumulative_list.begin();

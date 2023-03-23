@@ -127,6 +127,5 @@ install(
     challenge3_divergence
     challenge5_adaptive_particle_filter
   RUNTIME
-    DESTINATION ${PROJECT_INSTALL_BIN_DIR}
-    COMPONENT ${PROJECT_NAME}_RunTime
+    DESTINATION ${PROJECT_INSTALL_DIR}
 )

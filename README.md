@@ -1,16 +1,24 @@
 # Installation
-This repository is a C++ of the python scripts written [here](https://github.com/jelfring/particle-filter-tutorial). In order to build and run the code, the following packages must be installed:
+This repository is a C++ port of the python scripts written [here](https://github.com/jelfring/particle-filter-tutorial). In order to build and run the code, the following packages must be installed:
 
-* conan (used to fetch dependencies) 
-* cmake (tested with cmake 3.22.1)
+
+* cmake (tested with cmake 3.14+)
 * gnuplot (`sudo apt install gnuplot`)
 * compiler that supports C++17 (tested with g++ 7.5)
 * ninja (not required, but builds faster than `make`)
+*
+* also using fmt, eigen, and matplot++, but these are automatically fetched by CMake.
 
-To build, simply run ./tools/build.sh
+My primary dev environment was Ubuntu 20.04 running inside a docker container using VSCode as my IDE of choice. It should build fine outside of docker in any version of Ubuntu.   
 
-That will run conan to fetch dependencies and then forward those dependencies into cmake. 
-
+To build after cloning and entering into repo top level directory:
+```
+mkdir build
+cd build
+cmake ..
+ninja install
+```
+This will install all executables in an install folder inside the repo top level. Binaries will also be in `build/src/particle-filter-tutorial-cpp`
 
 # Documentation
 

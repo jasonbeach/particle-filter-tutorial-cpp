@@ -41,7 +41,8 @@ void AdaptiveParticleFilterKld::update(double robot_forward_motion, double robot
   while (num_particles_to_generate > 0) {
     std::generate_n(std::back_inserter(new_particles), num_particles_to_generate, [&]() {
       // Get sample from discrete distribution given by particle weights
-      const auto random_sample = draw_sample_by_weight(particles_);
+      const auto Q = cumulative_sum(particles_);
+      const auto random_sample = draw_sample_by_weight(Q);
 
       // Propagate state of selected particle
       auto propagated_state =
