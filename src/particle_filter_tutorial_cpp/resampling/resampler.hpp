@@ -16,24 +16,19 @@
 template <class ParticleType>
 ParticleList<ParticleType> resample_multinomial(const ParticleList<ParticleType>& samples,
                                                 size_t N) {
-  // compute cumulative weight sums.  This converts each weight to a "bucket" proportional to the
-  // magnitude of the weight. so when we uniformly pick a random number between 0 and 1, the larger
-  // each particles weight (or bucket) is the more likely it is for the random number to fall into
-  // that bucket
-  const auto Q = cumulative_sum(samples);
-
   static std::random_device rd;
   static std::mt19937_64 gen(rd());
-  static std::uniform_real_distribution<> dis(1e-6, 1.0);
 
   const double new_weight = 1.0 / static_cast<double>(N);  // new weights will be uniform
-  ParticleList<ParticleType> new_samples;
-  new_samples.reserve(N);
 
-  std::generate_n(std::back_inserter(new_samples), N, [&]() {
-    const double u = dis(gen);          // Draw a random sample u
-    const auto m = naive_search(Q, u);  // Naive search to element (alternative: binary search)
-    return ParticleType {new_weight, m->state};
+  std::vector<double> weights(N);
+  std::transform(samples.begin(), samples.end(), weights.begin(),
+                 [](const ParticleType& p) { return p.weight; });
+  std::discrete_distribution<> d(weights.begin(), weights.end());
+
+  ParticleList<ParticleType> new_samples(N);
+  std::generate_n(new_samples.begin(), N, [&]() {
+    return ParticleType {new_weight, samples[d(gen)].state};
   });
 
   return new_samples;

@@ -22,6 +22,7 @@ template <class ParticleType>
 class ParticleList : private std::vector<ParticleType> {
  public:
   using ParticleListType = std::vector<ParticleType>;
+  using ParticleListType::at;
   using ParticleListType::back;
   using ParticleListType::begin;
   using ParticleListType::cbegin;
@@ -37,6 +38,7 @@ class ParticleList : private std::vector<ParticleType> {
   using ParticleListType::reserve;
   using ParticleListType::resize;
   using ParticleListType::size;
+  using ParticleListType::operator[];
   using value_type = ParticleType;
 
   /**
